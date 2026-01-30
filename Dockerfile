@@ -1,16 +1,14 @@
-FROM python:3.12-slim
+FROM ubuntu:24.04
 
-WORKDIR /app
+RUN apt-get update && \
+    apt-get install -y \
+    python3-pip \
+    python3-venv \
+    && apt-get clean
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Copy requirements and install
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Ocean Protocol uses the $ALGO environment variable to point to the algorithm file
-# Using shell form so that $ALGO gets expanded at runtime
-ENTRYPOINT python $ALGO
+COPY requirements.txt /tmp/
+RUN pip install --upgrade pip wheel
+RUN pip install -r /tmp/requirements.txt
