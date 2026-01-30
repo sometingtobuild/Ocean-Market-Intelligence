@@ -1,6 +1,4 @@
-Below is a custom-tailored `README.md` that highlights your **Vibe Coding** philosophy and your integration with **Ocean Protocol**.
 
----
 
 # 🚀 Ocean Market Intelligence Engine
 
@@ -63,3 +61,4 @@ Upon a successful run, the engine delivers:
 ## 🏆 Conclusion
 
 This repository serves as a blueprint for developers looking to merge **Web3 infrastructure** with **AI-driven market analysis**. It proves that with the right intent and decentralized tools, anyone can build a secure, real-world connected intelligence engine.
+
