@@ -3,23 +3,28 @@ import json
 import requests
 import pandas as pd
 import numpy as np
+# CRITICAL FIX: Set non-interactive backend BEFORE importing pyplot
+# This is required for headless Docker/Ocean environments
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from sklearn.linear_model import LinearRegression
-
 # --- 🌊 OCEAN PROTOCOL CONFIGURATION 🌊 ---
+# Check multiple possible Ocean output directories
 if os.path.exists("/data/outputs"):
     OUTPUT_DIR = "/data/outputs"
-    print("🌊 Running in Ocean Protocol Environment")
+    print("🌊 Running in Ocean Protocol Environment (/data/outputs)")
+elif os.path.exists("/outputs"):
+    OUTPUT_DIR = "/outputs"
+    print("🌊 Running in Ocean Protocol Environment (/outputs)")
 else:
     OUTPUT_DIR = "results"
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
     print("💻 Running Locally")
-
 REPORT_FILE = os.path.join(OUTPUT_DIR, "market_report.json")
 CHART_FILE = os.path.join(OUTPUT_DIR, "ai_prediction_chart.png")
-
 # --- 1. REAL DATA FETCHING ---
 def fetch_real_data(coin_id="bitcoin", days=60):
     """Fetches real market data from CoinGecko."""
@@ -44,13 +49,11 @@ def fetch_real_data(coin_id="bitcoin", days=60):
     except Exception as e:
         print(f"❌ API Error: {e}")
         return generate_synthetic_backup()
-
 def generate_synthetic_backup(days=60):
     dates = [datetime.now() - timedelta(days=i) for i in range(days)]
     dates.reverse()
     prices = [45000 + np.random.normal(0, 500) * i for i in range(days)]
     return pd.DataFrame({'price': prices}, index=dates)
-
 # --- 2. MARKET INTELLIGENCE ---
 def calculate_indicators(df):
     print("🧮 Calculating Market Intelligence Indicators...")
@@ -63,7 +66,6 @@ def calculate_indicators(df):
     rs = gain / loss
     df['RSI'] = 100 - (100 / (1 + rs))
     return df, volatility
-
 # --- 3. REAL AI PREDICTION ---
 def run_ai_prediction(df):
     print("🤖 Training AI Model (Linear Regression)...")
@@ -83,7 +85,6 @@ def run_ai_prediction(df):
     prediction = model.predict([[next_day_idx]])[0]
     
     return model, prediction, X
-
 # --- 4. VISUALIZATION & REPORTING ---
 def save_results(df, model, X, prediction, volatility):
     print("🎨 Generating Intelligence Report...")
@@ -108,6 +109,7 @@ def save_results(df, model, X, prediction, volatility):
     plt.grid(True, alpha=0.3)
     
     plt.savefig(CHART_FILE)
+    plt.close()  # CRITICAL: Close figure to flush to disk
     print(f"🖼️ Chart saved to: {CHART_FILE}")
     
     # JSON Report
@@ -129,7 +131,6 @@ def save_results(df, model, X, prediction, volatility):
     with open(REPORT_FILE, 'w') as f:
         json.dump(report, f, indent=4)
     print(f"💾 Data report saved to: {REPORT_FILE}")
-
 def main():
     print("🚀 Starting Hybrid AI Engine...")
     df = fetch_real_data('bitcoin', days=60)
@@ -142,6 +143,5 @@ def main():
         print("✅ Job Complete.")
     else:
         print("❌ Error: No data available to process.")
-
 if __name__ == "__main__":
     main()
