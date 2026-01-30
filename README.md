@@ -41,7 +41,7 @@ This project was developed using a **Vibe Coding** methodology—focusing on arc
 
 ## 🌊 How to Run on Ocean Protocol
 
-1. **Setup:** Install the [Ocean Protocol VS Code Extension](https://www.google.com/search?q=https://marketplace.visualstudio.com/items%3FitemName%3DOceanProtocol.ocean-protocol).
+1. **Setup:** Download and install VS Code then afterwards install the [Ocean Nodes VS Code Extension](https://www.google.com/search?q=https://marketplace.visualstudio.com/items%3FitemName%3DOceanProtocol.ocean-protocol).
 2. **Initialize:** Open this folder in VS Code and select it as your "Project Folder" in the Ocean sidebar.
 3. **Configure:** Click **Configure Compute** and select `algo.py` as your algorithm.
 4. **Execute:** Click **Start FREE Compute Job**.
@@ -61,4 +61,5 @@ Upon a successful run, the engine delivers:
 ## 🏆 Conclusion
 
 This repository serves as a blueprint for developers looking to merge **Web3 infrastructure** with **AI-driven market analysis**. It proves that with the right intent and decentralized tools, anyone can build a secure, real-world connected intelligence engine.
+
 
